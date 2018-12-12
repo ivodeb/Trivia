@@ -8,54 +8,49 @@ public class Trivia {
 
     private ArrayList<Question> questions;
     private int points;
-    private int questionNumber;
-    private Question currentQuestion;
+    private int question_number;
+    private Question current_question;
 
     public Trivia(ArrayList<Question> questions) {
         this.questions = questions;
-        try {
-            this.currentQuestion = questions.get(0);
-        }
-        catch(ArrayIndexOutOfBoundsException e) {
-            Log.e("OutOfBounds", "question out of bounds");
-        }
+        this.current_question = questions.get(0);
     }
 
     public int getPoints() {
         return points;
     }
 
+    public int getQuestion_number() {
+        return question_number;
+    }
+
+    public Question getCurrent_question() {
+        return current_question;
+    }
+
+    public Question getNext_question() {
+        if (question_number >= questions.size()) {
+            return null;
+        }
+        Question next_question = questions.get(question_number);
+        current_question = next_question;
+        question_number++;
+        return next_question;
+    }
+
     public void setPoints(int points) {
         this.points = points;
     }
 
-    public int getQuestionNumber() {
-        return questionNumber;
+    public void setQuestion_number(int question_number) {
+        this.question_number = question_number;
     }
 
-    public void setQuestionNumber(int questionNumber) {
-        this.questionNumber = questionNumber;
+    public void setCurrent_question(Question current_question) {
+        this.current_question = current_question;
     }
 
-    public Question getCurrentQuestion() {
-        return currentQuestion;
-    }
-
-    public void setCurrentQuestion(Question currentQuestion) {
-        this.currentQuestion = currentQuestion;
-    }
-
-    public void answeredSuccesfully() {
+    public void answered_correctly() {
         this.points++;
-    }
-
-    public Question getNextQuestion() {
-        if (questionNumber >= questions.size()) {
-            return null;
-        }
-        Question nextQuestion = questions.get(questionNumber);
-        currentQuestion = nextQuestion;
-        questionNumber++;
-        return nextQuestion;
     }
 }

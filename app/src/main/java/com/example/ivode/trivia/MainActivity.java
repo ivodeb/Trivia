@@ -11,10 +11,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class GameActivity extends AppCompatActivity implements TriviaRequest.Callback {
+public class MainActivity extends AppCompatActivity implements TriviaRequest.Callback {
 
-    private int nQuestions = 10;
-    private String typeOfQuestion = "boolean";
+    private int number_of_questions = 10;
+    private String question_type = "boolean";
     private ArrayList<Question> questions;
     private Trivia trivia;
 
@@ -23,19 +23,18 @@ public class GameActivity extends AppCompatActivity implements TriviaRequest.Cal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TriviaRequest triviaRequest = new TriviaRequest(this, nQuestions, typeOfQuestion);
+        TriviaRequest triviaRequest = new TriviaRequest(this, number_of_questions, question_type);
         triviaRequest.getQuestions(this);
     }
 
     @Override
     public void gotQuestions(ArrayList<Question> questions) {
-        Toast.makeText(this, "Questions received!", Toast.LENGTH_LONG).show();
         this.questions = questions;
 
-        Button trueButton = findViewById(R.id.trueButton);
-        Button falseButton = findViewById(R.id.falseButton);
-        trueButton.setOnClickListener(new TrueFalseButtonListener(true));
-        falseButton.setOnClickListener(new TrueFalseButtonListener(false));
+        Button trueButton = findViewById(R.id.correct);
+        Button falseButton = findViewById(R.id.incorrect);
+        trueButton.setOnClickListener(new checkAnswer(true));
+        falseButton.setOnClickListener(new checkAnswer(false));
 
         this.trivia = new Trivia(questions);
         showNextQuestion();
@@ -46,31 +45,31 @@ public class GameActivity extends AppCompatActivity implements TriviaRequest.Cal
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    private class TrueFalseButtonListener implements View.OnClickListener {
+    private class checkAnswer implements View.OnClickListener {
 
-        private Boolean isButtonTrue;
+        private Boolean given_answer;
 
-        private TrueFalseButtonListener(Boolean isButtonTrue) {
-            this.isButtonTrue = isButtonTrue;
+        private checkAnswer(Boolean isButtonTrue) {
+            this.given_answer = isButtonTrue;
         }
 
         @Override
         public void onClick(View v) {
-            String correctAnswer = trivia.getCurrentQuestion().getCorrectAnswer();
+            String answer = trivia.getCurrent_question().getCorrectAnswer();
             String answer_response;
-            if (isButtonTrue) {
-                if (correctAnswer.equals("True")) {
+            if (given_answer) {
+                if (answer.equals("True")) {
                     answer_response = "Correct!";
-                    trivia.answeredSuccesfully();
+                    trivia.answered_correctly();
                 }
                 else {
                     answer_response = "Incorrect!";
                 }
             }
             else {
-                if (correctAnswer.equals("False")) {
+                if (answer.equals("False")) {
                     answer_response = "Correct!";
-                    trivia.answeredSuccesfully();
+                    trivia.answered_correctly();
                 }
                 else {
                     answer_response = "Incorrect!";
@@ -82,15 +81,19 @@ public class GameActivity extends AppCompatActivity implements TriviaRequest.Cal
     }
 
     private void showNextQuestion() {
-        if (trivia.getNextQuestion() == null) {
+        if (trivia.getNext_question() == null) {
             Toast.makeText(getApplicationContext(), "All questions answered", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(GameActivity.this, MenuActivity.class);
+            Intent intent = new Intent(MainActivity.this, StartActivity.class);
+            intent.putExtra("points", "You scored " + trivia.getPoints() + " out of 5");
             startActivity(intent);
         }
         else {
-            String question = trivia.getNextQuestion().getQuestion();
-            TextView questionView = findViewById(R.id.questionTextView);
-            questionView.setText(Html.fromHtml(question, 0));
+            TextView points_text = findViewById(R.id.points_text);
+            TextView question_text = findViewById(R.id.question_text);
+            String question = trivia.getNext_question().getQuestion();
+
+            points_text.setText(Html.fromHtml("Points: " + trivia.getPoints(), 0));
+            question_text.setText(Html.fromHtml(question, 0));
         }
     }
 }

@@ -18,8 +18,8 @@ public class TriviaRequest implements Response.Listener<JSONObject>, Response.Er
 
     private Context context;
     private ArrayList<Question> questions= new ArrayList<>();
-    private int nQuestions;
-    private String typeOfQuestion;
+    private int number_of_questions;
+    private String question_type;
 
     Callback activity;
 
@@ -28,10 +28,10 @@ public class TriviaRequest implements Response.Listener<JSONObject>, Response.Er
         void gotQuestionsError(String message);
     }
 
-    public TriviaRequest(Context c, int nQuestions, String typeOfQuestion) {
+    public TriviaRequest(Context c, int number_of_questions, String question_type) {
         this.context = c;
-        this.nQuestions = nQuestions;
-        this.typeOfQuestion = typeOfQuestion;
+        this.number_of_questions = number_of_questions;
+        this.question_type = question_type;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class TriviaRequest implements Response.Listener<JSONObject>, Response.Er
         this.activity = act;
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://opentdb.com/api.php?amount=" + nQuestions + "&type=" + typeOfQuestion;
+        String url = "https://opentdb.com/api.php?amount=" + number_of_questions + "&type=" + question_type;
 
         try {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, this, this);
