@@ -1,10 +1,9 @@
 package com.example.ivode.trivia;
 
-import android.util.Log;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Trivia {
+public class Trivia implements Serializable {
 
     private ArrayList<Question> questions;
     private int points;

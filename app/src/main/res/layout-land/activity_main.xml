@@ -38,8 +38,8 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
         android:layout_weight="0"
+        android:layout_marginTop="200dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:padding="8dp"
@@ -51,7 +51,6 @@
             android:id="@+id/correct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:text="True" />
 
         <View
@@ -63,7 +62,6 @@
             android:id="@+id/incorrect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:text="False" />
 
     </LinearLayout>
@@ -73,7 +71,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/journal"
-        android:padding="8dp"
         android:text="Points: "
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"

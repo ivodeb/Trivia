@@ -1,8 +1,9 @@
 package com.example.ivode.trivia;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Question {
+public class Question implements Serializable {
 
     private String category, difficulty, question, questionType, correctAnswer;
     private ArrayList<String> incorrectAnswers;

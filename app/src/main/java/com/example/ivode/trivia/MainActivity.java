@@ -23,8 +23,26 @@ public class MainActivity extends AppCompatActivity implements TriviaRequest.Cal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TriviaRequest triviaRequest = new TriviaRequest(this, number_of_questions, question_type);
-        triviaRequest.getQuestions(this);
+        if (savedInstanceState != null) {
+            this.trivia = (Trivia) savedInstanceState.getSerializable("trivia");
+            TextView question_number = findViewById(R.id.question_number);
+            TextView points_text = findViewById(R.id.points_text);
+            TextView question_text = findViewById(R.id.question_text);
+            String question = trivia.getCurrent_question().getQuestion();
+
+            question_number.setText("Question: " + trivia.getQuestion_number());
+            points_text.setText(Html.fromHtml("Points: " + trivia.getPoints(), 0));
+            question_text.setText(Html.fromHtml(question, 0));
+
+            Button trueButton = findViewById(R.id.correct);
+            Button falseButton = findViewById(R.id.incorrect);
+            trueButton.setOnClickListener(new checkAnswer(true));
+            falseButton.setOnClickListener(new checkAnswer(false));
+        }
+        else {
+            TriviaRequest triviaRequest = new TriviaRequest(this, number_of_questions, question_type);
+            triviaRequest.getQuestions(this);
+        }
     }
 
     @Override
@@ -48,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements TriviaRequest.Cal
     private class checkAnswer implements View.OnClickListener {
 
         private Boolean given_answer;
-
         private checkAnswer(Boolean isButtonTrue) {
             this.given_answer = isButtonTrue;
         }
@@ -84,16 +101,24 @@ public class MainActivity extends AppCompatActivity implements TriviaRequest.Cal
         if (trivia.getNext_question() == null) {
             Toast.makeText(getApplicationContext(), "All questions answered", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MainActivity.this, StartActivity.class);
-            intent.putExtra("points", "You scored " + trivia.getPoints() + " out of 5");
+            intent.putExtra("points", "You scored " + trivia.getPoints() + " out of " + number_of_questions/2);
             startActivity(intent);
         }
         else {
+            TextView question_number = findViewById(R.id.question_number);
             TextView points_text = findViewById(R.id.points_text);
             TextView question_text = findViewById(R.id.question_text);
             String question = trivia.getNext_question().getQuestion();
 
+            question_number.setText("Question: " + trivia.getQuestion_number());
             points_text.setText(Html.fromHtml("Points: " + trivia.getPoints(), 0));
             question_text.setText(Html.fromHtml(question, 0));
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("trivia", trivia);
     }
 }
