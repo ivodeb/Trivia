@@ -59,7 +59,7 @@ public class HighscoreRequest implements Response.Listener<JSONArray>, Response.
         this.activity = act;
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://ide50-s-terpstra.cs50.io/list";
+        String url = "https://ide50-ivodeb.cs50.io:8080/list";
         try {
             JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(url, this, this);
             queue.add(jsonObjectRequest);

@@ -8,10 +8,12 @@ import com.android.volley.toolbox.Volley;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,11 +32,11 @@ public class HighscoreActivity extends AppCompatActivity implements HighscoreReq
         my_highscore = intent.getIntExtra("highscore", 0);
 
         TextView score = findViewById(R.id.points_text);
-        score.setText("New highscore: " + String.valueOf(my_highscore));
+        score.setText("New highscore: " + String.valueOf(my_highscore) + " ");
     }
 
     public void onSendClicked(View v) {
-        TextInputEditText nameEdit = findViewById(R.id.nameInput);
+        TextInputEditText nameEdit = findViewById(R.id.input);
         String name = "";
         try {
             name = nameEdit.getText().toString();
@@ -49,6 +51,14 @@ public class HighscoreActivity extends AppCompatActivity implements HighscoreReq
         request.provideParams(name, my_highscore);
         queue.add(request);
 
+        Button sendButton = findViewById(R.id.send);
+        TextInputLayout textInputLayout = findViewById(R.id.input_view);
+
+        sendButton.setVisibility(View.GONE);
+        textInputLayout.setVisibility(View.GONE);
+    }
+
+    public void onHomeClicked(View v) {
         Intent intent = new Intent(HighscoreActivity.this, StartActivity.class);
         intent.putExtra("points", "" + my_highscore);
         startActivity(intent);
@@ -68,7 +78,7 @@ public class HighscoreActivity extends AppCompatActivity implements HighscoreReq
     @Override
     public void gotHighscores(ArrayList<Highscore> highscores) {
         HighscoreAdapter adapter = new HighscoreAdapter(this, R.layout.highscore, highscores);
-        ListView listView = findViewById(R.id._dynamic);
+        ListView listView = findViewById(R.id.highscores_list);
         listView.setAdapter(adapter);
     }
 
