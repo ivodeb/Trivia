@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements TriviaRequest.Callback {
 
-    private int number_of_questions = 10;
+    private int number_of_questions = 20;
     private String question_type = "boolean";
     private ArrayList<Question> questions;
     private Trivia trivia;
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements TriviaRequest.Cal
             TextView question_text = findViewById(R.id.question_text);
             String question = trivia.getCurrent_question().getQuestion();
 
-            question_number.setText("Question: " + trivia.getQuestion_number());
+            question_number.setText("Question: " + trivia.getQuestion_number()/2);
             points_text.setText(Html.fromHtml("Points: " + trivia.getPoints(), 0));
             question_text.setText(Html.fromHtml(question, 0));
 
@@ -99,9 +99,9 @@ public class MainActivity extends AppCompatActivity implements TriviaRequest.Cal
 
     private void showNextQuestion() {
         if (trivia.getNext_question() == null) {
-            Toast.makeText(getApplicationContext(), "All questions answered", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(MainActivity.this, StartActivity.class);
-            intent.putExtra("points", "You scored " + trivia.getPoints() + " out of " + number_of_questions/2);
+            Toast.makeText(getApplicationContext(), "All questions answered!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(MainActivity.this, HighscoreActivity.class);
+            intent.putExtra("highscore", trivia.getPoints());
             startActivity(intent);
         }
         else {
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements TriviaRequest.Cal
             TextView question_text = findViewById(R.id.question_text);
             String question = trivia.getNext_question().getQuestion();
 
-            question_number.setText("Question: " + trivia.getQuestion_number());
+            question_number.setText("Question: " + trivia.getQuestion_number()/2);
             points_text.setText(Html.fromHtml("Points: " + trivia.getPoints(), 0));
             question_text.setText(Html.fromHtml(question, 0));
         }

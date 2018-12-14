@@ -15,12 +15,13 @@ public class StartActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String points_scored = intent.getStringExtra("points");
-        TextView score = findViewById(R.id.score);
-        score.setText(points_scored);
 
         if (points_scored != null) {
+            TextView score = findViewById(R.id.score);
             TextView play_button = findViewById(R.id.play_button);
-            play_button.setText("Play again");
+
+            score.setText("You scored " + points_scored + " last round!");
+            play_button.setText("Play again?");
         }
     }
 
