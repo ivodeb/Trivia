@@ -4,4 +4,6 @@ Simple Trivia app.
 
 ![2](Trivia2.jpg)
 
-![3](Trivia3.jpg)
+Highscores:
+
+![3](Trivia4.jpg)
