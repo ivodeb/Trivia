@@ -11,11 +11,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/** Shows the questions (only true-false questions for now) and allows the user to answer them and score points.*/
 public class MainActivity extends AppCompatActivity implements TriviaRequest.Callback {
 
-    private int number_of_questions = 20;
-    private String question_type = "boolean";
-    private ArrayList<Question> questions;
+    int number_of_questions = 20;
+    String question_type = "boolean";
     private Trivia trivia;
 
     @Override
@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements TriviaRequest.Cal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // state restoration
         if (savedInstanceState != null) {
             this.trivia = (Trivia) savedInstanceState.getSerializable("trivia");
             TextView question_number = findViewById(R.id.question_number);
@@ -34,10 +35,10 @@ public class MainActivity extends AppCompatActivity implements TriviaRequest.Cal
             points_text.setText(Html.fromHtml("Points: " + trivia.getPoints(), 0));
             question_text.setText(Html.fromHtml(question, 0));
 
-            Button trueButton = findViewById(R.id.correct);
-            Button falseButton = findViewById(R.id.incorrect);
-            trueButton.setOnClickListener(new checkAnswer(true));
-            falseButton.setOnClickListener(new checkAnswer(false));
+            Button Correct = findViewById(R.id.correct);
+            Button Incorrect = findViewById(R.id.incorrect);
+            Correct.setOnClickListener(new checkAnswer(true));
+            Incorrect.setOnClickListener(new checkAnswer(false));
         }
         else {
             TriviaRequest triviaRequest = new TriviaRequest(this, number_of_questions, question_type);
@@ -47,15 +48,13 @@ public class MainActivity extends AppCompatActivity implements TriviaRequest.Cal
 
     @Override
     public void gotQuestions(ArrayList<Question> questions) {
-        this.questions = questions;
-
-        Button trueButton = findViewById(R.id.correct);
-        Button falseButton = findViewById(R.id.incorrect);
-        trueButton.setOnClickListener(new checkAnswer(true));
-        falseButton.setOnClickListener(new checkAnswer(false));
+        Button Correct = findViewById(R.id.correct);
+        Button Incorrect = findViewById(R.id.incorrect);
+        Correct.setOnClickListener(new checkAnswer(true));
+        Incorrect.setOnClickListener(new checkAnswer(false));
 
         this.trivia = new Trivia(questions);
-        showNextQuestion();
+        nextQuestion();
     }
 
     @Override
@@ -63,43 +62,31 @@ public class MainActivity extends AppCompatActivity implements TriviaRequest.Cal
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
+    // check answer and give respective toast, then show next question
     private class checkAnswer implements View.OnClickListener {
 
         private Boolean given_answer;
-        private checkAnswer(Boolean isButtonTrue) {
-            this.given_answer = isButtonTrue;
+        private checkAnswer(Boolean correct_pressed) {
+            this.given_answer = correct_pressed;
         }
 
         @Override
         public void onClick(View v) {
             String answer = trivia.getCurrent_question().getCorrectAnswer();
-            String answer_response;
-            if (given_answer) {
-                if (answer.equals("True")) {
-                    answer_response = "Correct!";
-                    trivia.answered_correctly();
-                }
-                else {
-                    answer_response = "Incorrect!";
-                }
+            if ((given_answer && answer.equals("True")) || (!given_answer && answer.equals("False"))) {
+                Toast.makeText(getApplicationContext(), "Correct!", Toast.LENGTH_LONG).show();
+                trivia.answered_correctly();
             }
             else {
-                if (answer.equals("False")) {
-                    answer_response = "Correct!";
-                    trivia.answered_correctly();
-                }
-                else {
-                    answer_response = "Incorrect!";
-                }
+                Toast.makeText(getApplicationContext(), "Incorrect!", Toast.LENGTH_LONG).show();
             }
-            Toast.makeText(getApplicationContext(), answer_response, Toast.LENGTH_LONG).show();
-            showNextQuestion();
+            nextQuestion();
         }
     }
 
-    private void showNextQuestion() {
+    // check if there is a next question; if not, go to highscores, else: call the question
+    private void nextQuestion() {
         if (trivia.getNext_question() == null) {
-            Toast.makeText(getApplicationContext(), "All questions answered!", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MainActivity.this, HighscoreActivity.class);
             intent.putExtra("highscore", trivia.getPoints());
             startActivity(intent);

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 
+/** Let's the player fill in a name to send their highscore. Then shows the current leaderboard.*/
 public class HighscoreActivity extends AppCompatActivity implements HighscoreRequest.CallbackHighscore, Response.Listener, Response.ErrorListener {
 
     private int my_highscore;
@@ -30,49 +31,43 @@ public class HighscoreActivity extends AppCompatActivity implements HighscoreReq
 
         Intent intent = getIntent();
         my_highscore = intent.getIntExtra("highscore", 0);
-
         TextView score = findViewById(R.id.points_text);
-        score.setText("New highscore: " + String.valueOf(my_highscore) + " ");
+        score.setText("New highscore: " + String.valueOf(my_highscore) + "! ");
     }
 
     public void onSendClicked(View v) {
-        TextInputEditText nameEdit = findViewById(R.id.input);
+        TextInputEditText input_name = findViewById(R.id.input);
         String name = "";
         try {
-            name = nameEdit.getText().toString();
+            name = input_name.getText().toString();
         }
         catch(Exception e) {
-            Log.e("inputText", e.getMessage());
+            Log.e("input_error", e.getMessage());
         }
 
-        String url = "https://ide50-ivodeb.cs50.io:8080/list";
+        // my server on CS50 IDE, won't work if not running
+        String url = "https://ide50-ivodeb.cs50.io:8080/highscores";
         RequestQueue queue = Volley.newRequestQueue(this);
         HighscorePostRequest request = new HighscorePostRequest(Request.Method.POST, url, this, this);
-        request.provideParams(name, my_highscore);
+        request.putParams(name, my_highscore);
         queue.add(request);
 
+        // no need to make another activity for the highscore list, just remove the input views
         Button sendButton = findViewById(R.id.send);
         TextInputLayout textInputLayout = findViewById(R.id.input_view);
-
         sendButton.setVisibility(View.GONE);
         textInputLayout.setVisibility(View.GONE);
-    }
-
-    public void onHomeClicked(View v) {
-        Intent intent = new Intent(HighscoreActivity.this, StartActivity.class);
-        intent.putExtra("points", "" + my_highscore);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onResponse(Object response) {
         HighscoreRequest highscoreRequest = new HighscoreRequest(this);
         highscoreRequest.getHighscores(this);
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -92,5 +87,9 @@ public class HighscoreActivity extends AppCompatActivity implements HighscoreReq
         Intent intent = new Intent(HighscoreActivity.this, StartActivity.class);
         intent.putExtra("points", "" + my_highscore);
         startActivity(intent);
+    }
+
+    public void onHomeClicked(View v) {
+        onBackPressed();
     }
 }

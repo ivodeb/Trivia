@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+/** Start activity with title screen and play button. */
 public class StartActivity extends AppCompatActivity {
 
     @Override

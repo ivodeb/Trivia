@@ -15,38 +15,46 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/** Request current highscores from server. */
 public class HighscoreRequest implements Response.Listener<JSONArray>, Response.ErrorListener {
 
     private Context context;
     private ArrayList<Highscore> highscores = new ArrayList<>();
 
+    // callback from another activity
     CallbackHighscore activity;
-
     public interface CallbackHighscore {
         void gotHighscores(ArrayList<Highscore> highscores);
         void gotHighscoresError(String message);
     }
 
-    public HighscoreRequest(Context context) {
+    HighscoreRequest(Context context) {
         this.context = context;
     }
 
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        activity.gotHighscoresError(error.getMessage());
+    void getHighscores(CallbackHighscore activity) {
+        this.activity = activity;
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // my server on CS50 IDE, won't work if not running
+        String url = "https://ide50-ivodeb.cs50.io:8080/highscores";
+        try {
+            JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(url, this, this);
+            queue.add(jsonObjectRequest);
+        }
+        catch(Exception error) {
+            Log.e("requestError", error.getMessage());
+        }
     }
 
     @Override
     public void onResponse(JSONArray response) {
         try {
-            JSONArray highscoreArray = response;
-
-            for (int i = 0; i < highscoreArray.length(); i++) {
-                JSONObject highscoreObject = highscoreArray.getJSONObject(i);
-                String name = highscoreObject.getString("name");
-                String score = highscoreObject.getString("score");
-                Highscore highscore = new Highscore(name, score);
-                highscores.add(highscore);
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject highscore = response.getJSONObject(i);
+                String name = highscore.getString("name");
+                String score = highscore.getString("score");
+                highscores.add(new Highscore(name, score));
             }
         }
         catch(JSONException error) {
@@ -55,17 +63,8 @@ public class HighscoreRequest implements Response.Listener<JSONArray>, Response.
         activity.gotHighscores(highscores);
     }
 
-    public void getHighscores(CallbackHighscore act) {
-        this.activity = act;
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://ide50-ivodeb.cs50.io:8080/list";
-        try {
-            JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(url, this, this);
-            queue.add(jsonObjectRequest);
-        }
-        catch(Exception error) {
-            Log.e("requestError", error.getMessage());
-        }
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        activity.gotHighscoresError(error.getMessage());
     }
 }

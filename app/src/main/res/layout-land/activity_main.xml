@@ -13,7 +13,7 @@
         android:layout_weight="0"
         android:fontFamily="@font/journal"
         android:gravity="center_horizontal"
-        android:padding="8dp"
+        android:padding="4dp"
         android:text=""
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +27,7 @@
         android:layout_weight="0"
         android:fontFamily="@font/journal"
         android:gravity="center_horizontal"
-        android:padding="8dp"
+        android:padding="4dp"
         android:text=""
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,12 +38,11 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
         android:layout_marginTop="200dp"
+        android:layout_weight="0"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/points_text"
+        android:padding="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -53,10 +52,17 @@
             android:layout_height="wrap_content"
             android:text="True" />
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="80dp"
-            android:layout_height="0dp" />
+        <TextView
+            android:id="@+id/points_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/journal"
+            android:padding="10dp"
+            android:text=" Points: "
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <Button
             android:id="@+id/incorrect"
@@ -65,17 +71,6 @@
             android:text="False" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/points_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/journal"
-        android:text="Points: "
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 
 </android.support.constraint.ConstraintLayout>

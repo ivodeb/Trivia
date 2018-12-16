@@ -3,6 +3,7 @@ package com.example.ivode.trivia;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/** Serializable trivia with list of questions, points, question nr and current question. */
 public class Trivia implements Serializable {
 
     private ArrayList<Question> questions;
@@ -10,12 +11,12 @@ public class Trivia implements Serializable {
     private int question_number;
     private Question current_question;
 
-    public Trivia(ArrayList<Question> questions) {
+    Trivia(ArrayList<Question> questions) {
         this.questions = questions;
         this.current_question = questions.get(0);
     }
 
-    public int getPoints() {
+    int getPoints() {
         return points;
     }
 
@@ -23,11 +24,15 @@ public class Trivia implements Serializable {
         return question_number;
     }
 
-    public Question getCurrent_question() {
+    public void setQuestion_number(int question_number) {
+        this.question_number = question_number;
+    }
+
+    Question getCurrent_question() {
         return current_question;
     }
 
-    public Question getNext_question() {
+    Question getNext_question() {
         if (question_number >= questions.size()) {
             return null;
         }
@@ -37,19 +42,7 @@ public class Trivia implements Serializable {
         return next_question;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public void setQuestion_number(int question_number) {
-        this.question_number = question_number;
-    }
-
-    public void setCurrent_question(Question current_question) {
-        this.current_question = current_question;
-    }
-
-    public void answered_correctly() {
+    void answered_correctly() {
         this.points++;
     }
 }

@@ -2,20 +2,22 @@ package com.example.ivode.trivia;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
-
 import java.util.HashMap;
 import java.util.Map;
 
+/** Posts the user's score and name. */
 public class HighscorePostRequest extends StringRequest {
 
     private String name;
     private int points;
 
-    public HighscorePostRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
+    HighscorePostRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
         super(method, url, listener, errorListener);
     }
 
-    public void provideParams(String name, int points) {
+    // from https://docs.joomla.org/API17:JComponentHelper::getParams
+
+    void putParams(String name, int points) {
         this.name = name;
         this.points = points;
     }

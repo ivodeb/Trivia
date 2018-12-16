@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/** Request a trivia from API, currently only with true/false questions and normal difficulty! */
 public class TriviaRequest implements Response.Listener<JSONObject>, Response.ErrorListener {
 
     private Context context;
@@ -21,22 +22,31 @@ public class TriviaRequest implements Response.Listener<JSONObject>, Response.Er
     private int number_of_questions;
     private String question_type;
 
+    // callback from another activity
     Callback activity;
-
     public interface Callback {
         void gotQuestions(ArrayList<Question> questions);
         void gotQuestionsError(String message);
     }
 
-    public TriviaRequest(Context c, int number_of_questions, String question_type) {
-        this.context = c;
+    TriviaRequest(Context context, int number_of_questions, String question_type) {
+        this.context = context;
         this.number_of_questions = number_of_questions;
         this.question_type = question_type;
     }
 
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        activity.gotQuestionsError(error.getMessage());
+    void getQuestions(Callback activity) {
+        this.activity = activity;
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "https://opentdb.com/api.php?amount=" + number_of_questions + "&type=" + question_type;
+
+        try {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, this, this);
+            queue.add(jsonObjectRequest);
+        }
+        catch(Exception error) {
+            Log.e("error", error.getMessage());
+        }
     }
 
     @Override
@@ -47,41 +57,20 @@ public class TriviaRequest implements Response.Listener<JSONObject>, Response.Er
             for (int i = 0; i < questionArray.length(); i++) {
                 JSONObject questionObject = questionArray.getJSONObject(i);
                 String category = questionObject.getString("category");
-                String questionType = questionObject.getString("type");
-                String difficulty = questionObject.getString("difficulty");
                 String question = questionObject.getString("question");
-                String correctAnswer = questionObject.getString("correct_answer");
-
-                ArrayList<String> incorrectAnswers = new ArrayList<>();
-                JSONArray incorrectAnswersArray = questionObject.getJSONArray("incorrect_answers");
-                for (int j = 0; j < incorrectAnswersArray.length(); j++) {
-                    incorrectAnswers.add(incorrectAnswersArray.getString(j));
-                }
-
-                Question retrievedQuestion = new Question(category, difficulty, question,
-                        questionType, correctAnswer,
-                        incorrectAnswers);
+                String correct_answer = questionObject.getString("correct_answer");
+                Question retrievedQuestion = new Question(category, question, correct_answer);
                 questions.add(retrievedQuestion);
             }
         }
         catch(JSONException error) {
-            Log.e("requestError", error.getMessage());
+            Log.e("error", error.getMessage());
         }
         activity.gotQuestions(questions);
     }
 
-    void getQuestions(Callback act) {
-        this.activity = act;
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://opentdb.com/api.php?amount=" + number_of_questions + "&type=" + question_type;
-
-        try {
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, this, this);
-            queue.add(jsonObjectRequest);
-        }
-        catch(Exception error) {
-            Log.e("requestError", error.getMessage());
-        }
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        activity.gotQuestionsError(error.getMessage());
     }
 }

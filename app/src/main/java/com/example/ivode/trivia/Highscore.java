@@ -2,11 +2,12 @@ package com.example.ivode.trivia;
 
 import android.support.annotation.NonNull;
 
+/** Highscore with name and score. Comparable to compare with other highscores and form a ranking. */
 public class Highscore implements Comparable<Highscore> {
 
     private String name, score;
 
-    public Highscore(String name, String score) {
+    Highscore(String name, String score) {
         this.name = name;
         this.score = score;
     }

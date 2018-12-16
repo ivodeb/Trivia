@@ -1,23 +1,18 @@
 package com.example.ivode.trivia;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
+/** Serializable question with category, question and correct answer. */
 public class Question implements Serializable {
 
-    private String category, difficulty, question, questionType, correctAnswer;
-    private ArrayList<String> incorrectAnswers;
+    private String category, question, correct_answer;
 
-    public Question(String category, String difficulty, String question, String questionType, String correctAnswer, ArrayList<String> incorrectAnswers) {
+    Question(String category, String question, String correct_answer) {
         this.category = category;
-        this.difficulty = difficulty;
         this.question = question;
-        this.questionType = questionType;
-        this.correctAnswer = correctAnswer;
-        this.incorrectAnswers = incorrectAnswers;
+        this.correct_answer = correct_answer;
     }
 
-    // getters and setters
     public String getCategory() {
         return category;
     }
@@ -26,43 +21,11 @@ public class Question implements Serializable {
         this.category = category;
     }
 
-    public String getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    public String getQuestion() {
+    String getQuestion() {
         return question;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public String getQuestionType() {
-        return questionType;
-    }
-
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType;
-    }
-
-    public String getCorrectAnswer() {
-        return correctAnswer;
-    }
-
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
-
-    public ArrayList<String> getIncorrectAnswers() {
-        return incorrectAnswers;
-    }
-
-    public void setIncorrectAnswers(ArrayList<String> incorrectAnswers) {
-        this.incorrectAnswers = incorrectAnswers;
+    String getCorrectAnswer() {
+        return correct_answer;
     }
 }
