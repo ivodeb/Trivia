@@ -1,7 +1,5 @@
 package com.example.ivode.trivia;
 
-import android.support.annotation.NonNull;
-
 /** Highscore with name and score. Comparable to compare with other highscores and form a ranking. */
 public class Highscore implements Comparable<Highscore> {
 
@@ -13,16 +11,8 @@ public class Highscore implements Comparable<Highscore> {
     }
 
     @Override
-    public int compareTo(@NonNull Highscore other) {
-        return other.score.compareTo(score);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public int compareTo(Highscore highscore) {
+        return highscore.score.compareTo(score);
     }
 
     public String getScore() {
@@ -31,5 +21,13 @@ public class Highscore implements Comparable<Highscore> {
 
     public void setScore(String score) {
         this.score = score;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

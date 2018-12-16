@@ -11,8 +11,8 @@ public class HighscorePostRequest extends StringRequest {
     private String name;
     private int points;
 
-    HighscorePostRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
-        super(method, url, listener, errorListener);
+    HighscorePostRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener error_listener) {
+        super(method, url, listener, error_listener);
     }
 
     // from https://docs.joomla.org/API17:JComponentHelper::getParams
