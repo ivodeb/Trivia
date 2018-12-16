@@ -1,9 +1,10 @@
-Simple Trivia app.
+# Trivia by Ivo de Brouwer 11045841
 
-![1](Trivia1.jpg)
+Extra features:
+- There wasn't a lot I could think of to improve the app, so I spent a lot of time getting the lay-out as clean as I could.
 
-![2](Trivia2.jpg)
+## Screenshots
 
-Highscores:
-
-![3](Trivia4.jpg)
+Categories                | Dishes                | Dish details        
+:------------------------:|:---------------------:|:----------------------------:|
+![1](Trivia1.jpg)         | ![2](Trivia2.jpg)     | ![3](Trivia4.jpg)            |
