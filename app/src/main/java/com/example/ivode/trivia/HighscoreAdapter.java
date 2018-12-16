@@ -27,7 +27,7 @@ public class HighscoreAdapter extends ArrayAdapter<Highscore> {
     @Override
     public View getView(int position, @Nullable View view, @NonNull ViewGroup parent) {
         if (view == null) {
-            return LayoutInflater.from(getContext()).inflate(R.layout.highscore, parent,
+            view = LayoutInflater.from(getContext()).inflate(R.layout.highscore, parent,
                     false);
         }
         TextView highscore_name = view.findViewById(R.id.highscore_name);
