@@ -5,6 +5,6 @@ Extra features:
 
 ## Screenshots
 
-Categories                | Dishes                | Dish details        
-:------------------------:|:---------------------:|:----------------------------:|
-![1](Trivia1.jpg)         | ![2](Trivia2.jpg)     | ![3](Trivia4.jpg)            |
+Categories                    | Dishes                    | Dish details        
+:----------------------------:|:-------------------------:|:--------------------------------:|
+![1](doc/Trivia1.jpg)         | ![2](doc/Trivia2.jpg)     | ![3](doc/Trivia4.jpg)            |
