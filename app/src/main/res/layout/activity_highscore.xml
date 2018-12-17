@@ -31,21 +31,21 @@
             android:id="@+id/input"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="Fill in your name to send your highscore!"
+            android:hint="Fill in your name to post your highscore!"
             android:inputType="text"
             android:padding="8dp" />
 
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/send"
+        android:id="@+id/post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_margin="8dp"
-        android:onClick="onSendClicked"
+        android:onClick="onPostClicked"
         android:padding="8dp"
-        android:text="Send"
+        android:text="Post"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/highscores_list"
         app:layout_constraintEnd_toEndOf="parent"
