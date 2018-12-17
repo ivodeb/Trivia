@@ -8,25 +8,23 @@ import java.util.Map;
 /** Posts the user's score and name. */
 public class HighscorePostRequest extends StringRequest {
 
-    private String name;
-    private int points;
+    private String highscore_name;
+    private int highscore_points;
 
     HighscorePostRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener error_listener) {
         super(method, url, listener, error_listener);
     }
 
-    // from https://docs.joomla.org/API17:JComponentHelper::getParams
-
-    void putParams(String name, int points) {
-        this.name = name;
-        this.points = points;
-    }
-
     @Override
     protected Map<String, String> getParams(){
         Map<String, String> params = new HashMap<>();
-        params.put("name", this.name);
-        params.put("score", String.valueOf(this.points));
+        params.put("name", highscore_name);
+        params.put("score", String.valueOf(highscore_points));
         return params;
+    }
+
+    void postHighscore(String name, int points) {
+        highscore_name = name;
+        highscore_points = points;
     }
 }

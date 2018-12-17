@@ -49,7 +49,7 @@ public class HighscoreActivity extends AppCompatActivity implements HighscoreReq
         String url = "https://ide50-ivodeb.cs50.io:8080/highscores";
         RequestQueue queue = Volley.newRequestQueue(this);
         HighscorePostRequest request = new HighscorePostRequest(Request.Method.POST, url, this, this);
-        request.putParams(name, my_highscore);
+        request.postHighscore(name, my_highscore);
         queue.add(request);
 
         // no need to make another activity for the highscore list, just remove the input views
